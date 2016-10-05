@@ -1,15 +1,18 @@
 @import 'https://fonts.googleapis.com/css?family=Open+Sans|Roboto|Bangers';
 * {
     box-sizing: border-box;
-    user-select: none;
-    cursor: pointer;
-    focus: none;
 }
 
 body {
     margin: 0;
     overflow: hidden;
     font-family: 'Roboto', 'Open Sans', sans-serif;
+}
+
+canvas {
+    user-select: none;
+    cursor: pointer;
+    focus: none;
 }
 
 .alertify-header {
@@ -26,6 +29,23 @@ body {
     text-shadow: 0px 2px 2px #000;
     transition: all 0.7s;
     margin-right: 12px;
+}
+
+.alertify-subheader {
+    font-size: 10px;
+    margin: 0;
+    margin-top: 0px;
+    padding: 0;
+}
+
+.message-hr {
+    margin: 0 40px 10px 40px;
+}
+
+.gameplay {
+    font-size: 14px;
+    text-align: center;
+    line-height: 1.6;
 }
 
 .s {
@@ -66,21 +86,4 @@ body {
 
 .n:hover {
     color: #dd1919;
-}
-
-.alertify-subheader {
-    font-size: 10px;
-    margin: 0;
-    margin-top: 0px;
-    padding: 0;
-}
-
-.message-hr {
-    margin: 0 40px 10px 40px;
-}
-
-.gameplay {
-    font-size: 14px;
-    text-align: center;
-    line-height: 1.6;
 }

@@ -97,48 +97,49 @@ class Game {
 
     }
     drawStrictModeToggle() {
-        // open shadow blur
-        ctx.shadowBlur = 4;
-        ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
+        this.setShadow();
         ctx.fillStyle = this.strictMode ? '#b62626' : '#33ad24';
         ctx.fillRect(50, 50, 150, 50);
         ctx.font = '14px Arial';
         ctx.fillStyle = '#fff';
         let strictMode = this.strictMode ? 'ON' : 'OFF';
         ctx.fillText(`Strict Mode ${strictMode}`, 75, 80);
-        ctx.shadowBlur = 0;
+        this.clearShadow();
     }
     drawRestartButton() {
-        ctx.shadowBlur = 4;
-        ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
+        this.setShadow();
         ctx.fillStyle = '#2b2fa1';
         ctx.fillRect(50, 110, 150, 50);
         ctx.font = '14px Arial';
         ctx.fillStyle = '#fff';
         ctx.fillText('Restart Game', 85, 140);
-        // close shadow blur
-        ctx.shadowBlur = 0;
+        this.clearShadow();
     }
     drawReplayButton() {
-        ctx.shadowBlur = 4;
-        ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
-        ctx.fillStyle = '#862dbd';
+        this.setShadow();
+        ctx.shadowColor = this.active && !this.strictMode ? 'rgba(0, 0, 0, 0.5)' : 'rgba(0, 0, 0, 0.25)';
+        ctx.fillStyle = this.active && !this.strictMode ? '#862dbd' : 'rgba(134, 45, 189, 0.25)';
         ctx.fillRect(50, 170, 150, 50);
         ctx.font = '14px Arial';
-        ctx.fillStyle = '#fff';
+        ctx.fillStyle = this.active && !this.strictMode ? '#fff' : 'rgba(255, 255, 255, 0.25)';
         ctx.fillText('Replay Sequence', 71, 200);
+        this.clearShadow();
     }
     initialize() {
         clear();
         this.drawStrictModeToggle();
         this.drawRestartButton();
-        if (!this.strictMode && this.active) {
-            this.drawReplayButton();
-        }
+        this.drawReplayButton();
         this.clearShadow();
         this.quadrants.forEach(quadrant => quadrant.draw());
         this.drawOutline();
         this.drawText();
+    }
+    setShadow() {
+        ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
+        ctx.shadowBlur = 2;
+        ctx.shadowOffsetX = 1;
+        ctx.shadowOffsetY = 1;
     }
     clearShadow() {
         ctx.shadowColor = 'rgba(0, 0, 0, 0)';
@@ -147,28 +148,28 @@ class Game {
         ctx.shadowOffsetY = 0;
     }
     drawText() {
-        ctx.shadowBlur = 5;
+        this.setShadow();
         ctx.shadowColor = 'rgba(0, 0, 0, 0.8)';
         this.drawHelp();
         this.drawScores();
         this.drawWhoseTurn();
-        ctx.shadowBlur = 0;
+        this.clearShadow();
     }
     drawScores() {
-        ctx.font = '14px Helvetica Neue';
+        ctx.font = '16px Helvetica Neue';
         ctx.fillStyle = '#ddd';
         ctx.fillText(`Score: ${this.score}`, this.textPosition.x, this.textPosition.y);
         ctx.fillText(`Round: ${this.round + 1}`, this.textPosition.x, this.textPosition.y + 15);
     }
     drawWhoseTurn() {
-        ctx.font = '14px Helvetica Neue';
+        ctx.font = '16px Helvetica Neue';
         let fillStyle = this.active ? '#4ac630' : '#ff0700';
         ctx.fillStyle = fillStyle;
         let whoseTurn = this.active ? 'Player Turn' : 'Computer Turn';
         ctx.fillText(whoseTurn, this.textPosition.x, this.textPosition.y + 90);
     }
     drawHelp() {
-        ctx.font = '14px Helvetica Neue';
+        ctx.font = '16px Helvetica Neue';
         ctx.fillStyle = '#ddd';
         ctx.fillText(`Target: ${this.round + 1}`, this.textPosition.x, this.textPosition.y + 45);
         ctx.fillText(`Current: ${this.turn}`, this.textPosition.x, this.textPosition.y + 60);
@@ -462,7 +463,7 @@ canvas.addEventListener('mousedown', (e) => {
                     return;
                 });
     }
-    if (replaySequenceToggle) {
+    if (replaySequenceToggle && Simon.active && !Simon.strictMode) {
         alertify.success('Replaying...');
         Simon.removeListeners();
         Simon.animateSequence();
