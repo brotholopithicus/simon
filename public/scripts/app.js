@@ -119,10 +119,22 @@ class Game {
         // close shadow blur
         ctx.shadowBlur = 0;
     }
+    drawReplayButton() {
+        ctx.shadowBlur = 4;
+        ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
+        ctx.fillStyle = '#862dbd';
+        ctx.fillRect(50, 170, 150, 50);
+        ctx.font = '14px Arial';
+        ctx.fillStyle = '#fff';
+        ctx.fillText('Replay Sequence', 71, 200);
+    }
     initialize() {
         clear();
         this.drawStrictModeToggle();
         this.drawRestartButton();
+        if (!this.strictMode) {
+            this.drawReplayButton();
+        }
         this.quadrants.forEach(quadrant => quadrant.draw());
         this.drawOutline();
         this.drawText();
@@ -413,6 +425,8 @@ canvas.addEventListener('mousedown', (e) => {
 
     let restartGameToggle = pos.x > 50 && pos.y > 125 && pos.x < 200 && pos.y < 175;
 
+    let replaySequenceToggle = pos.x > 50 && pos.y > 170 && pos.x < 250 && pos.y < 220;
+
     if (strictModeToggle) {
         let ok = Simon.strictMode ? 'Turn Off' : 'Turn On';
         let cancel = 'Cancel';
@@ -440,5 +454,10 @@ canvas.addEventListener('mousedown', (e) => {
                 () => {
                     return;
                 });
+    }
+    if (replaySequenceToggle) {
+        alertify.success('Replaying...');
+        Simon.removeListeners();
+        Simon.animateSequence();
     }
 });
