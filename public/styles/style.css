@@ -1,0 +1,86 @@
+@import 'https://fonts.googleapis.com/css?family=Open+Sans|Roboto|Bangers';
+* {
+    box-sizing: border-box;
+    user-select: none;
+    cursor: pointer;
+    focus: none;
+}
+
+body {
+    margin: 0;
+    overflow: hidden;
+    font-family: 'Roboto', 'Open Sans', sans-serif;
+}
+
+.alertify-header {
+    margin-bottom: 10px;
+    margin-top: -10px;
+    padding: 0;
+}
+
+.alertify-header span {
+    font-size: 84px;
+    margin: 0;
+    padding: 0;
+    font-family: 'Bangers';
+    text-shadow: 0px 2px 2px #000;
+    transition: all 0.7s;
+    margin-right: 12px;
+}
+
+.s {
+    color: #2d882d;
+}
+
+.i {
+    color: #aa3939;
+}
+
+.m {
+    color: #2e4272;
+}
+
+.o {
+    color: #aa8439;
+}
+
+.n {
+    color: #aa3939;
+}
+
+.s:hover {
+    color: #1dcf44;
+}
+
+.i:hover {
+    color: #dd1919;
+}
+
+.m:hover {
+    color: #1f53da;
+}
+
+.o:hover {
+    color: #dce010;
+}
+
+.n:hover {
+    color: #dd1919;
+}
+
+.alertify-subheader {
+    font-size: 10px;
+    margin: 0;
+    margin-top: 0px;
+    padding: 0;
+}
+
+.message-hr {
+    margin: 0 40px 10px 40px;
+}
+
+.gameplay {
+    font-size: 14px;
+    text-align: center;
+    line-height: 1.6;
+}
