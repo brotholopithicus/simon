@@ -307,9 +307,9 @@ class Game {
                 this.turn++;
                 let self = this;
                 setTimeout(() => {
-                    this.turn = 0;
-                    this.playerSequence = [];
-                    this.round++;
+                    self.turn = 0;
+                    self.playerSequence = [];
+                    self.round++;
                     self.newRound();
                 }, this.pulse);
             }
@@ -333,6 +333,14 @@ class Game {
         this.round = 0;
         this.turn = 0;
         this.active = false;
+    }
+    replaySequence() {
+        this.removeListeners();
+        this.score = this.score - this.playerSequence.length;
+        this.playerSequence = [];
+        this.turn = 0;
+        Simon.removeListeners();
+        Simon.animateSequence();
     }
     addListeners() {
         this.active = true;
@@ -465,7 +473,6 @@ canvas.addEventListener('mousedown', (e) => {
     }
     if (replaySequenceToggle && Simon.active && !Simon.strictMode) {
         alertify.success('Replaying...');
-        Simon.removeListeners();
-        Simon.animateSequence();
+        Simon.replaySequence();
     }
 });
