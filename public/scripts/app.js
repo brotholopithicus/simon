@@ -6,11 +6,11 @@ const HEIGHT = window.innerHeight;
 const ASPECT = WIDTH / HEIGHT;
 
 /* ========== ASSETS ========== */
-let noteOne = new Audio('./assets/a3.mp3');
-let noteTwo = new Audio('./assets/f3.mp3');
-let noteThree = new Audio('./assets/f4.mp3');
-let noteFour = new Audio('./assets/f5.mp3');
-let error = new Audio('./assets/error.wav');
+let noteOne = new Audio('../assets/a3.mp3');
+let noteTwo = new Audio('../assets/f3.mp3');
+let noteThree = new Audio('../assets/f4.mp3');
+let noteFour = new Audio('../assets/f5.mp3');
+let error = new Audio('../assets/error.wav');
 
 /* ========== CANVAS SETUP ========== */
 canvas.width = WIDTH;
