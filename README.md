@@ -5,7 +5,7 @@
 
 | SCREENSHOTS                           |
 | ------------------------------------- |
-| ![Screenshot](public/assets/screenshot-2.png) |
 | ![Screenshot](public/assets/screenshot-1.png) |
+| ![Screenshot](public/assets/screenshot-2.png) |
 | ![Screenshot](public/assets/screenshot-3.png) |
 | ![Screenshot](public/assets/screenshot-4.png) |
