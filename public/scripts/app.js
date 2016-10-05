@@ -132,12 +132,19 @@ class Game {
         clear();
         this.drawStrictModeToggle();
         this.drawRestartButton();
-        if (!this.strictMode) {
+        if (!this.strictMode && this.active) {
             this.drawReplayButton();
         }
+        this.clearShadow();
         this.quadrants.forEach(quadrant => quadrant.draw());
         this.drawOutline();
         this.drawText();
+    }
+    clearShadow() {
+        ctx.shadowColor = 'rgba(0, 0, 0, 0)';
+        ctx.shadowBlur = 0;
+        ctx.shadowOffsetX = 0;
+        ctx.shadowOffsetY = 0;
     }
     drawText() {
         ctx.shadowBlur = 5;
