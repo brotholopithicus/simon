@@ -587,7 +587,9 @@ canvas.addEventListener('mousedown', (e) => {
         Simon.replaySequence();
     }
 });
+
 socket.on('new score', (scores) => {
+    console.log('new score!');
     Simon.setHighScores(scores);
     Simon.drawHighScores();
 });

@@ -1,6 +1,5 @@
 const express = require('express');
 const app = express();
-const favicon = require('serve-favicon');
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
 const path = require('path');
@@ -34,8 +33,9 @@ io.on('connection', (socket) => {
             console.log('new score saved!', newScore);
             Score.find({}, (err, scores) => {
                 if (err) throw err;
-                socket.emit('new score', scores);
-            })
+                io.emit('new score', scores);
+            });
+
         });
     });
     socket.on('disconnect', () => {
