@@ -1,24 +1,28 @@
 {
-  "name": "SimonSaysv2",
-  "version": "1.0.0",
-  "description": "> Simon is an electronic game of memory skill invented by Ralph H. Baer and Howard J. Morrison, with software programming by Lenny Cope, The original version was manufactured and distributed by Milton Bradley but now the game is currently manufactured by Hasbro. Much of the assembly language was written by Dr. Charles Kapps, who taught computer science at Temple University and also wrote one of the first books on the theory of computer programming. Simon was launched in 1978 at Studio 54 in New York City and was an immediate success, becoming a pop culture symbol of the 1970s and 1980s. > > <cite>https://en.wikipedia.org/wiki/Simon_(game)</cite>",
-  "main": "server.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/brotholopithicus/SimonSays.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/brotholopithicus/SimonSays/issues"
-  },
-  "homepage": "https://github.com/brotholopithicus/SimonSays#readme",
-  "dependencies": {
-    "express": "^4.14.0"
-  }
+    "name": "SimonSaysv2",
+    "version": "1.0.0",
+    "description": "> Simon is an electronic game of memory skill invented by Ralph H. Baer and Howard J. Morrison, with software programming by Lenny Cope, The original version was manufactured and distributed by Milton Bradley but now the game is currently manufactured by Hasbro. Much of the assembly language was written by Dr. Charles Kapps, who taught computer science at Temple University and also wrote one of the first books on the theory of computer programming. Simon was launched in 1978 at Studio 54 in New York City and was an immediate success, becoming a pop culture symbol of the 1970s and 1980s. > > <cite>https://en.wikipedia.org/wiki/Simon_(game)</cite>",
+    "main": "server.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "node server.js",
+        "dev": "nodemon server.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/brotholopithicus/SimonSays.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/brotholopithicus/SimonSays/issues"
+    },
+    "homepage": "https://github.com/brotholopithicus/SimonSays#readme",
+    "dependencies": {
+        "express": "^4.14.0",
+        "mongoose": "^4.6.3",
+        "pug": "^2.0.0-beta6",
+        "socket.io": "^1.4.8"
+    }
 }

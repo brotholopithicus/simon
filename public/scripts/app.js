@@ -1,8 +1,11 @@
+/* ========== SOCKET.IO ========== */
+const socket = io();
+
 /* ========== CONSTANTS ========== */
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
-const WIDTH = window.innerWidth;
-const HEIGHT = window.innerHeight;
+const WIDTH = 1436 || window.innerWidth;
+const HEIGHT = 803 || window.innerHeight;
 const ASPECT = WIDTH / HEIGHT;
 
 /* ========== ASSETS ========== */
@@ -85,6 +88,7 @@ class Game {
         this.pulse = 750;
 
         // player props
+        this.highScores = [];
         this.playerSequence = [];
         this.turn = 0;
         this.score = 0;
@@ -125,11 +129,81 @@ class Game {
         ctx.fillText('Replay Sequence', 71, 200);
         this.clearShadow();
     }
+    getHighScores() {
+        axios
+            .get('/scores')
+            .then((response) => {
+                let highScores = response.data;
+                if (highScores.length > 0) {
+                    this.setHighScores(highScores);
+                    this.drawHighScores();
+                }
+                console.log(response);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
+    setHighScores(scores) {
+        Simon.highScores = scores;
+        this.sortHighScores();
+        if (Simon.highScores.length > 10) {
+            Simon.highScores = Simon.highScores.slice(10, Simon.highScores.length);
+        }
+    }
+    drawHighScores() {
+        this.setShadow();
+        ctx.beginPath();
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = '#000';
+        ctx.moveTo(40, 235);
+        ctx.lineTo(210, 235);
+        ctx.stroke();
+        ctx.closePath();
+
+        ctx.fillStyle = '#d4d4d4';
+        ctx.fillRect(50, 250, 150, 250);
+
+        ctx.font = '24px Helvetica Neue';
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.65)';
+        ctx.fillText('High Scores', 60, 275);
+
+        ctx.beginPath();
+        ctx.moveTo(60, 285);
+        ctx.lineTo(190, 285);
+        ctx.stroke();
+        ctx.closePath();
+        ctx.font = '14px Helvetica Neue';
+
+        for (var i = 0; i < this.highScores.length; i++) {
+            let posY = 305 + (i * 24);
+            let posX = 60;
+            ctx.fillText(`${this.highScores[i].name}: ${this.highScores[i].score}`, posX, posY);
+        }
+        this.clearShadow();
+    }
+    sortHighScores() {
+        this.highScores.sort((a, b) => {
+            if (a.score > b.score) {
+                return -1;
+            }
+            if (a.score < b.score) {
+                return 1;
+            }
+            return 0;
+        });
+    }
+    onWindowLoad() {
+        this.getHighScores();
+    }
     initialize() {
         clear();
         this.drawStrictModeToggle();
         this.drawRestartButton();
         this.drawReplayButton();
+        if (this.highScores.length > 0) {
+            this.drawHighScores();
+        }
         this.clearShadow();
         this.quadrants.forEach(quadrant => quadrant.draw());
         this.drawOutline();
@@ -153,6 +227,10 @@ class Game {
         this.drawHelp();
         this.drawScores();
         this.drawWhoseTurn();
+
+        if (this.highScores.length > 0) {
+            this.drawHighScores();
+        }
         this.clearShadow();
     }
     drawScores() {
@@ -257,18 +335,49 @@ class Game {
                 this.score = this.score - this.playerSequence.length;
                 this.playerSequence = [];
                 this.turn = 0;
+
                 if (!this.strictMode) {
+                    let highScoreThreshold = this.score > 1;
+                    let lowScoreMsg = `that's not right... try this level again or restart game?`;
+                    let highScoreMsg = `that's not right... try this level again or submit score and restart?`;
+                    let msg = highScoreThreshold ? highScoreMsg : lowScoreMsg;
                     alertify
                         .okBtn('Try Again')
-                        .cancelBtn('Restart Game')
-                        .confirm(`that's not right... try this level again or restart game?`,
+                        .cancelBtn('Restart')
+                        .confirm(msg,
                             () => {
                                 this.removeListeners();
                                 this.animateSequence();
                             },
                             () => {
-                                this.startGame();
-                            })
+                                if (!highScoreThreshold) {
+                                    setTimeout(() => {
+                                        this.startGame();
+                                    }, 1000);
+                                } else {
+                                    alertify
+                                        .okBtn('Submit')
+                                        .cancelBtn('Cancel')
+                                        .prompt('submit an alias to save high score',
+                                            (name) => {
+                                                if (name.length > 12) {
+                                                    name = name.substr(0, 12);
+                                                }
+                                                let highScore = {
+                                                    name,
+                                                    score: this.score
+                                                };
+                                                socket.emit('score', highScore);
+                                                setTimeout(() => {
+                                                    this.startGame();
+                                                }, 1000);
+                                            },
+                                            () => {
+                                                this.startGame();
+                                            });
+
+                                }
+                            });
                 } else {
                     alertify
                         .okBtn('Yes')
@@ -332,6 +441,7 @@ class Game {
         this.playerSequence = [];
         this.round = 0;
         this.turn = 0;
+        this.score = 0;
         this.active = false;
     }
     replaySequence() {
@@ -406,6 +516,7 @@ function onMouseDown(e) {
 
 window.onload = function() {
     Simon.initialize();
+    Simon.onWindowLoad();
     let welcomeMessage = `
         <h1 class="alertify-header">
           <span class="s">S</span>
@@ -475,4 +586,8 @@ canvas.addEventListener('mousedown', (e) => {
         alertify.success('Replaying...');
         Simon.replaySequence();
     }
+});
+socket.on('new score', (scores) => {
+    Simon.setHighScores(scores);
+    Simon.drawHighScores();
 });
